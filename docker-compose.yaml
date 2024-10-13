@@ -1,0 +1,26 @@
+services:
+  fastnote_db:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: testando_db  
+      POSTGRES_PASSWORD: adminpass
+    ports:
+      - "5432:5432"
+
+  fastnote_app:
+    image: fastnote_app
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - fastnote_db
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:adminpass@fastnote_db:5432/testando_db
+
+volumes:
+  pgdata:

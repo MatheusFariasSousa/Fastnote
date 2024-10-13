@@ -1,0 +1,158 @@
+body{
+    margin-top: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+    background-color: #b4cfe8e0;
+}
+
+.Box-login{
+    height: 500px;
+    width: 90%;
+    position: center;
+    background-color:#91bae1e0;
+
+    margin-top: 7%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 22px;
+    z-index: -1;
+
+}
+
+.linha{
+    border-left-style: solid;
+    border-color: rgb(23, 111, 211);
+    height: 220px;
+    margin-left: 660px;
+    margin-top: -400px;
+
+    z-index: 100;
+}
+
+.itens-cadastro {
+    position: absolute;
+    width: 650px;
+    height: 400px;
+    z-index: 100;
+    left: 140px;
+    top: 130px;
+    font-size: 20px;   
+}
+
+#fname{
+    position: absolute;
+    top: 80px;
+    width: 330px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color:#f2eaea;
+    
+}
+#cpf{
+    position: absolute;
+    top: 160px;
+    width: 330px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color:#f2e7e7;
+}
+#password{
+    position: absolute;
+    top: 250px;
+    width: 330px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color:#f4efef;
+    left: 0px;
+}
+
+#submit{
+    position: absolute;
+    top: 365px;
+    left: 60px;
+    width: 230px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color: #efeaea;
+    cursor: pointer;
+    color:  rgb(23, 111, 211)
+}
+#submit:hover{
+    transition: 0.6s;
+    background-color: rgb(23, 111, 211);
+    color: rgb(220, 209, 209);
+}
+
+#login-form{
+    position: absolute;
+    width: 343px;
+    height: 400px;
+    z-index: 100;
+    left: 800px;
+    top: 130px;
+    font-size: 20px;
+
+}
+
+#username{
+    position: absolute;
+    top: 80px;
+    width: 270px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color: #efeaea;
+}
+
+.password2{
+    position: absolute;
+    top: 160px;
+    width: 270px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    background-color: #efeaea;
+}
+
+.submit2{
+    position: absolute;
+    top: 250px;
+    width: 270px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid rgb(23, 111, 211);
+    cursor: pointer;
+    background-color:  #efeaea;
+    color:  rgb(23, 111, 211)
+}
+.submit2:hover{
+    transition: 0.6s;
+    background-color: rgb(23, 111, 211);
+    color:  rgb(204, 199, 199);
+}
+
+.button {
+    display: inline-block; /* Para que funcione como um botão */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    border: 2px solid rgb(23, 111, 211); /* Borda */
+    background-color: #efeaea; /* Cor de fundo */
+    color:  rgb(23, 111, 211); /* Cor do texto */
+
+    text-decoration: none; /* Remove o sublinhado do link */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    transition: background-color 0.6s, color 0.6s; /* Transição suave ao passar o mouse */
+    position: absolute; /* Para posicionamento */
+    top: 500px; /* Ajuste a posição vertical para descer mais */
+    left: 840px; /* Ajuste a posição horizontal */
+    
+}
+
+.button:hover {
+    background-color:  rgb(23, 111, 211);
+    color: rgb(204, 199, 199); /* Cor do texto ao passar o mouse */
+}

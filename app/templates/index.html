@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/app/static/index.css">
+    <link href="{{ url_for('static', path='/app/static/styles.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/app/static/index.css">
+    <link rel="shortcut icon" href="/app/static/img/img.png">
+</head>
+<body>
+    <!DOCTYPE html>
+<html>
+<body>
+
+    <div class="Box-login"></div>
+    
+
+
+<form class="itens-cadastro" action="/front/result-form" method="post">
+    <h2>Criar Conta</h2>
+  <label for="fname"></label>
+  <input type="text" id="fname" name="fname" placeholder="Insira seu nome completo">
+  <label for="cpf"></label>
+  <input type="text" id="cpf" name="cpf" placeholder="Insira seu cpf">dafsag
+  <label for="password"></label>
+  <input type="text" id="password" name="password" placeholder="Crie uma senha">
+  <button type="submit" id="submit" value="Submit"><b>Fazer cadastro</b></button>
+  
+</form> 
+
+    <div class="linha"></div>
+
+
+
+<form id="login-form" action="/front/get-token" method="post">
+    <h2>Entrar</h2>
+  <label for="username"></label>
+  <input type="text" id="username" name="username" placeholder="Insira seu nome">
+  <label for="password"></label>
+  <input type="text" class="password2" name="password" placeholder="Insira sua senha">
+  <button type="submit" class="submit2" value="Login"><b>Fazer login</b></button>
+  
+</form> 
+<a id="notes-link" href="#" class="button"><b>Ir para suas notas</b></a>
+
+
+
+
+<script>
+  const loginForm = document.getElementById('login-form');
+
+  loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); 
+
+      const formData = new FormData(loginForm); 
+
+      
+      const response = await fetch('/front/get-token', {
+          method: 'POST',
+          body: new URLSearchParams(formData) 
+      });
+
+      if (response.ok) {
+          const data = await response.json();
+
+          
+          localStorage.setItem('access_token', data.access_token);
+          alert("Token armazenado com sucesso no localStorage!");
+
+         
+          const token = data.access_token; 
+          const seeTokenLink = document.getElementById('notes-link');
+          seeTokenLink.href = `/front/notes/${token}`; 
+      } else {
+          alert("Erro ao obter o token.");
+      }
+  });
+</script>
+
+
+
+</body>
+</html>
+
+
+    
+</body>
+</html>
