@@ -72,6 +72,21 @@ def deleteNote(id:int,token:str=Form(...),db_session:Session = Depends(get_conec
     uc.delete_note(id = id,user=current_user)
     return RedirectResponse(url=f"/front/notes/{token}", status_code=status.HTTP_303_SEE_OTHER)
 
+@front_router.post("/put-note/{id}")
+def put_note(id:int,token:str=Form(...),title:str=Form(...),note:str=Form(...),db_session:Session = Depends(get_conection)):
+         
+        print(note)
+        print("!!!!!!!!!!!!!!!!!!!!")
+        payload = decode_token(token=token)
+        current_user = get_user_from_payload(db_session=db_session, payload=payload)
+        uc = Notes_Use_Case(db_session=db_session)
+        notes = Note_Schema(title=title, text=note)
+        uc.put_note(id, notes=notes, user=current_user)
+
+        return RedirectResponse(url=f"/front/notes/{token}", status_code=status.HTTP_303_SEE_OTHER)
+    
+     
+
 
 
 

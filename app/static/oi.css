@@ -22,7 +22,7 @@ body {
     top: 104px;
     cursor: pointer;
     height: 40px;
-    width: 40px;
+    width: 40px;                                    
     margin: 10px 0;
 }
 
@@ -115,7 +115,7 @@ main {
     display: inline-block;
 }
 
-#salvar:hover{
+#save:hover,#editar:hover{
     border: 2px solid rgb(23, 111, 211);
     background-color: rgb(23, 111, 211);
     color: #f2eaea;
@@ -165,3 +165,5 @@ ul{
 hr{
     border-color: rgb(23, 111, 211); 
 }
+
+

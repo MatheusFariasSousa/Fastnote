@@ -18,5 +18,5 @@ app.include_router(router=router)
 app.include_router(router=front_router)
 app.include_router(router=note_router)
 
-app.mount("/app/static",StaticFiles(directory="app/static"),name="static")
+app.mount("/static",StaticFiles(directory="app/static"),name="static")
 
