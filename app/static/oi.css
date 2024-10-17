@@ -115,7 +115,7 @@ main {
     display: inline-block;
 }
 
-#save:hover,#editar:hover{
+#salvar:hover,#editar:hover{
     border: 2px solid rgb(23, 111, 211);
     background-color: rgb(23, 111, 211);
     color: #f2eaea;
@@ -167,3 +167,21 @@ hr{
 }
 
 
+#editar{
+    height: 30px;
+    width: 70px;
+    color:  rgb(23, 111, 211);
+    background-color: #f2eaea;
+    border: 2px solid  rgb(23, 111, 211);
+    border-radius: 12px;
+    margin-top: 1em;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+#editar:hover,#editar:hover{
+    border: 2px solid rgb(23, 111, 211);
+    background-color: rgb(23, 111, 211);
+    color: #f2eaea;
+}
