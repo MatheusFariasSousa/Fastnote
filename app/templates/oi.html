@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/app/static/oi.css">
+        <script src="/app/static/javascript/funcao.js"></script>
+        <link rel="shortcut icon" href="/app/static/img/icon-salvar.png">
+        <link rel="shortcut icon" href="/app/static/img/img.png">
+        <title>Fast Note</title>
+    </head>
+<body>
+
+    <main>
+        
+            <form id="note-form" action="/front/notes" method="post">
+                <div class="bloco-nota" id="nota">
+                    <div class="bem-vindo"><h3>Bem vindo: {{user.name}}</h3></div>
+                    <h3><i>Título</i></h3>
+                    <input type="hidden" name="token" value="{{ token }}">
+                    <input type="hidden" id="note-id" name="note_id" value=""> 
+                    
+                    <label for="title"></label>
+                    <input type="text" id="title" name="title" placeholder="Insira seu título">
+                    
+                    <label for="note"></label>
+                    <textarea id="note" name="note" placeholder="Insira seu texto..."></textarea>
+                    
+                    
+                    <button  type="submit" value="Submit" id="salvar"><b><i>Salvar</i></b></button>
+        
+                    
+                    <button class="indic" type="submit" id="editar" disabled><b><i>Editar</i></b></button> 
+                </div>
+            </form>
+        </main>
+        
+        <div class="main-titulo-lista">
+            <h1 class="titulo-lista-nota">Lista de Notas</h1>
+        </div>
+        
+        <div class="Lista-de-Notas">
+            {% for note in notes %}
+                <li>{{ note.title }}: {{ note.text }} -- [{{note.created_at}}] -- {{note.id}}
+                    <form action="/front/delete-note/{{note.id}}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="token" value="{{ token }}">
+                        <button id="excluir" type="submit"><b>Excluir</b></button>
+                    </form>
+        
+                   
+                    <button id="excluir" class="edit-note" data-id="{{note.id}}" data-title="{{note.title}}" data-text="{{note.text}}" type="button">Editar</button>
+            
+            <hr>
+            
+         
+    {% else %}
+        <li>Não existe notas ainda!!</li>
+        
+        
+    {% endfor %}
+    </div>
+    
+</ul>
+
+
+
+<script>
+    
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+        alert('Você precisa estar logado para acessar esta página!');
+        window.location.href = '/login'; 
+    } else {
+        
+        fetch('/front/current-user', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao obter informações do usuário');
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            document.getElementById('user-info').innerText = `Usuário: ${data.username}`;
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            
+        });
+    }
+    window.addEventListener('beforeunload', function() {
+    document.getElementById('note-form').reset(); 
+});
+/*function deleteNote(noteId) {
+        if (confirm('Você tem certeza que deseja excluir essa nota?')) {
+            fetch(`/front/notes/${noteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao deletar a nota');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message);  
+                window.location.reload();  
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao deletar a nota');
+            });
+        }
+    }*/
+
+    const editButtons = document.querySelectorAll('.edit-note');
+    const form = document.getElementById('note-form');
+    const titleInput = document.getElementById('title');
+    const noteInput = document.getElementById('note');
+    const noteIdField = document.getElementById('note-id');
+    const salvarButton = document.getElementById('salvar');
+    const editarButton = document.getElementById('editar');
+
+    
+    editButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const noteId = button.getAttribute('data-id');
+        const title = button.getAttribute('data-title');
+        const text = button.getAttribute('data-text');
+
+        
+        titleInput.value = title;
+        noteInput.value = text;
+        noteIdField.value = noteId;
+
+        salvarButton.disabled= true;
+        editarButton.disabled = false;
+
+        
+        form.action = `/front/put-note/${noteId}`;
+    });
+});
+
+   
+    editarButton.addEventListener('click', () => {
+    form.method = "post";  
+
+    
+    const hiddenMethodField = document.createElement('input');
+    hiddenMethodField.type = 'hidden';
+    hiddenMethodField.name = '_method';
+    hiddenMethodField.value = 'put';  
+    form.appendChild(hiddenMethodField);
+
+    
+});
+
+    
+    salvarButton.addEventListener('click', () => {
+        form.method = "post";
+    });
+    
+</script>
+
+
+
+</body>
+</html>
