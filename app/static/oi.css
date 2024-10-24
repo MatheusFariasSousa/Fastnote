@@ -114,6 +114,10 @@ main {
     position: relative;
     display: inline-block;
 }
+#salvar[disabled]{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 #salvar:hover,#editar:hover{
     border: 2px solid rgb(23, 111, 211);
