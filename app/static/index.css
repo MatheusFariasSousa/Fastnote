@@ -90,7 +90,7 @@ body{
 #login-form{
     position: absolute;
     width: 343px;
-    height: 400px;
+    height: 350px;
     z-index: 100;
     left: 800px;
     top: 130px;
@@ -136,23 +136,29 @@ body{
 }
 
 .button {
-    display: inline-block; /* Para que funcione como um botão */
-    padding: 10px 20px; /* Espaçamento interno */
+    display: inline; /* Para que funcione como um botão */
+    padding: 8px 20px; /* Espaçamento interno */
     border-radius: 10px; /* Bordas arredondadas */
     border: 2px solid rgb(23, 111, 211); /* Borda */
-    background-color: #efeaea; /* Cor de fundo */
+    background-color: #ffffff; /* Cor de fundo */
     color:  rgb(23, 111, 211); /* Cor do texto */
 
     text-decoration: none; /* Remove o sublinhado do link */
     cursor: pointer; /* Muda o cursor ao passar o mouse */
     transition: background-color 0.6s, color 0.6s; /* Transição suave ao passar o mouse */
-    position: absolute; /* Para posicionamento */
-    top: 500px; /* Ajuste a posição vertical para descer mais */
-    left: 840px; /* Ajuste a posição horizontal */
     
 }
 
 .button:hover {
     background-color:  rgb(23, 111, 211);
     color: rgb(204, 199, 199); /* Cor do texto ao passar o mouse */
+}
+.button-container{
+    margin: 0;
+    position: absolute;
+    top: 52%;
+    left: 49%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+
 }

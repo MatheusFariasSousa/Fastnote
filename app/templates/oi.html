@@ -7,6 +7,9 @@
         <script src="/app/static/javascript/funcao.js"></script>
         <link rel="shortcut icon" href="/app/static/img/icon-salvar.png">
         <link rel="shortcut icon" href="/app/static/img/img.png">
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
         <title>Fast Note</title>
     </head>
 <body>
@@ -23,8 +26,8 @@
                     <label for="title"></label>
                     <input type="text" id="title" name="title" placeholder="Insira seu título">
                     
-                    <label for="note"></label>
-                    <textarea id="note" name="note" placeholder="Insira seu texto..."></textarea>
+                    <label for="editor-container"></label>
+                    <div id="editor-container" style="height: 280px !important;"></div>
                     
                     
                     <button  type="submit" value="Submit" id="salvar"><b><i>Salvar</i></b></button>
@@ -34,14 +37,15 @@
                 </div>
             </form>
         </main>
-        
+            
         <div class="main-titulo-lista">
+            
             <h1 class="titulo-lista-nota">Lista de Notas</h1>
         </div>
         
         <div class="Lista-de-Notas">
             {% for note in notes %}
-                <li>{{ note.title }}: {{ note.text }} -- [{{note.created_at}}] -- {{note.id}}
+                <li>Título: {{ note.title }} --  Data: {{note.created_at.day}}-{{note.created_at.month}}-{{note.created_at.year}}
                     <form action="/front/delete-note/{{note.id}}" method="post" style="display:inline;">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="token" value="{{ token }}">
@@ -50,6 +54,25 @@
         
                     <!-- Botão para selecionar nota para editar -->
                     <button id="excluir" class="edit-note" data-id="{{note.id}}" data-title="{{note.title}}" data-text="{{note.text}}" type="button">Editar</button>
+                    <button type="button" id="b_pdf" class="pdf-note"  data-id="{{note.id}}" data-token="{{ token }}">PDF</button>
+                    <button type="button" id="vis" class="vis-note" data-id="{{note.id}}" data-title="{{note.title}}" data-text="{{note.text}}" data-date="{{note.created_at}}">Visualizar</button>
+                    <div id="myModal" class="modaldiv">
+                    <div id="modal" class="modals">
+                        <span class="close">&times;</span>
+                        <p id="titleModel" class="titleModel"></p>
+                        <p id="textModel" class="textModel"></p>
+                        <p id="dateModel" class="dateModel"></p>
+                        <p id="noteId" class="noteId" hidden></p>
+                        <div class="email-part">
+                        <button type="button" id="butEmail">Email</button>
+                        <input id="inputEmail" type="email" name="inputEmail" placeholder="Digite seu email">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <button type="button" id="sendEmail" class="send-Email" data-id="{{note.id}}">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+                    
             
             <hr>
             
@@ -60,12 +83,20 @@
         
     {% endfor %}
     </div>
+
+    
     
 </ul>
 
 
 
+
+
+
 <script>
+      var quill = new Quill('#editor-container', {
+        theme: 'snow' // Tema com barra de ferramentas
+        });
     
     const token = localStorage.getItem('access_token');
 
@@ -130,6 +161,90 @@
     const noteIdField = document.getElementById('note-id');
     const salvarButton = document.getElementById('salvar');
     const editarButton = document.getElementById('editar');
+    const pdfButtons = document.querySelectorAll('.pdf-note');
+    const visButton = document.querySelectorAll('.vis-note');
+    const message = document.getElementById('myModal');
+    const span = document.getElementsByClassName('close')[0];
+    const butEmail = document.getElementById('butEmail');
+    const inputEmail = document.getElementById('inputEmail');
+    const sendEmail = document.getElementById('sendEmail');
+    const send_Email = document.querySelectorAll('.send-Email')
+    const noteBack = document.getElementById('noteId')
+
+
+   send_Email.forEach(button => {
+    button.addEventListener('click',()=>{
+        const email = inputEmail.value;
+        const id = noteBack.textContent;
+
+        
+        const data = { id, email };
+
+        
+        fetch('/front/email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(data) 
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+                
+            } else {
+                throw new Error('Erro na requisição');
+            }
+        })
+        .then(result => {
+            console.log('Sucesso:', result);
+            alert('Email enviado com sucesso!');
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+});
+
+    butEmail.onclick = () => {
+        inputEmail.style.display = 'inline'
+        butEmail.style.display = 'none'
+        sendEmail.style.display = 'inline'
+
+
+    }
+
+
+    visButton.forEach(button => {
+        button.addEventListener('click',()=>{
+            const id = button.getAttribute('data-id');
+            const title = button.getAttribute('data-title');
+            const text = button.getAttribute('data-text');
+            const date = button.getAttribute('data-date');
+            
+            document.getElementById('noteId').textContent  = id
+            document.getElementById('titleModel').textContent = title
+            document.getElementById('textModel').textContent = text
+            document.getElementById('dateModel').textContent = date.slice(0,10)
+
+            message.style.display='block';
+            butEmail.style.display = 'inline';
+            
+            
+            
+
+
+        });
+    });
+
+
+
+    span.onclick = function(){
+        message.style.display = 'none';
+        inputEmail.style.display = 'none';
+        sendEmail.style.display = 'none'
+
+    }
 
     
     editButtons.forEach(button => {
@@ -166,9 +281,36 @@
 });
 
     
-    salvarButton.addEventListener('click', () => {
-        form.method = "post";
+pdfButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const noteId = button.getAttribute('data-id');
+        
+        
+        const token = button.getAttribute('data-token');
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/front/download-pdf/${noteId}`;
+
+        
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token';
+        tokenInput.value = token;
+        form.appendChild(tokenInput);
+        
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+        
+        
     });
+});
+
+
+
+    
     
 </script>
 
@@ -176,3 +318,4 @@
 
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Form,Depends,status,HTTPException,Response
+from fastapi import APIRouter,Form,Depends,status,HTTPException,Response,Body
 from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -11,7 +11,11 @@ from app.schema.user_schema import User_schema,User_Schema_Output
 from app.schema.notes_schema import Note_Schema
 from app.use_case.user_use_cases import User_use_cases
 from app.use_case.notes_use_cases import Notes_Use_Case
+from app.use_case.pdf_use_cases import Pdf_Use_Case
+from app.use_case.email_use_cases import Emai_Use_Case
 from app.security.user import create_access_token,get_current_user,decode_token,get_user_from_payload
+from fastapi.responses import StreamingResponse
+
 
 from passlib.context import CryptContext
 
@@ -75,8 +79,7 @@ def deleteNote(id:int,token:str=Form(...),db_session:Session = Depends(get_conec
 @front_router.post("/put-note/{id}")
 def put_note(id:int,token:str=Form(...),title:str=Form(...),note:str=Form(...),db_session:Session = Depends(get_conection)):
          
-        print(note)
-        print("!!!!!!!!!!!!!!!!!!!!")
+
         payload = decode_token(token=token)
         current_user = get_user_from_payload(db_session=db_session, payload=payload)
         uc = Notes_Use_Case(db_session=db_session)
@@ -85,8 +88,44 @@ def put_note(id:int,token:str=Form(...),title:str=Form(...),note:str=Form(...),d
 
         return RedirectResponse(url=f"/front/notes/{token}", status_code=status.HTTP_303_SEE_OTHER)
     
-     
 
+@front_router.post("/download-pdf/{id}")
+def download_pdf(id:int,db_session:Session = Depends(get_conection)):
+    try:
+        uc = Pdf_Use_Case(db_session=db_session, id=id)
+        pdf_buffer = uc.create_pdf_in_memory()
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    
+    filename = f"{uc.title.replace(' ', '_')}.pdf"
+
+    
+    return StreamingResponse(pdf_buffer, media_type="application/pdf", headers={
+        "Content-Disposition": f"attachment; filename={filename}"
+    })
+
+
+
+
+@front_router.get("/notes/list/{token}")
+def read_notes_all(request:Request,token:str,db_session:Session = Depends(get_conection)):
+    payload = decode_token(token=token)
+    current_user = get_user_from_payload(db_session=db_session,payload=payload)
+    notes = db_session.query(Notes).where(Notes.user_id==current_user.id)
+    return templates.TemplateResponse("list.html",{"request":request,"notes":notes,"user":current_user,"token": token})
+
+@front_router.post("/email")
+def print_email(data:dict = Body(...),db_session:Session = Depends(get_conection)):
+    uc = Emai_Use_Case(db_session=db_session)
+    uc.enviar_email(id=int(data["id"]),email_user=data["email"])
+    return status.HTTP_200_OK
+     
+    
+    
+    
+    
+    
 
 
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/app/static/index.css">
-    <link href="{{ url_for('static', path='/app/static/styles.css') }}" rel="stylesheet">
+    <!--<link href="{{ url_for('static', path='/app/static/index.css') }}" rel="stylesheet">-->
     <link rel="stylesheet" href="/app/static/index.css">
     <link rel="shortcut icon" href="/app/static/img/img.png">
 </head>
@@ -44,7 +44,10 @@
   <button type="submit" class="submit2" value="Login"><b>Fazer login</b></button>
   
 </form> 
-<a id="notes-link" href="#" class="button"><b>Ir para suas notas</b></a>
+<div class="button-container">
+<a id="notes-link" href="#" class="button"><b>Criar Nota</b></a>
+
+</div>
 
 
 
@@ -73,7 +76,11 @@
          
           const token = data.access_token; 
           const seeTokenLink = document.getElementById('notes-link');
-          seeTokenLink.href = `/front/notes/${token}`; 
+          
+          seeTokenLink.href = `/front/notes/${token}`;
+          
+          
+
       } else {
           alert("Erro ao obter o token.");
       }
