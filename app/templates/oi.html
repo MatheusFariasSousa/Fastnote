@@ -16,12 +16,15 @@
 
     <main>
         
-            <form id="note-form" action="/front/notes" method="post">
+            <form id="note-form" action="/front/note" method="post">
                 <div class="bloco-nota" id="nota">
                     <div class="bem-vindo"><h3>Bem vindo: {{user.name}}</h3></div>
                     <h3><i>Título</i></h3>
                     <input type="hidden" name="token" value="{{ token }}">
                     <input type="hidden" id="note-id" name="note_id" value=""> 
+                    <input type="hidden" id="notetext" name="notetext" value=""> 
+
+
                     
                     <label for="title"></label>
                     <input type="text" id="title" name="title" placeholder="Insira seu título">
@@ -30,7 +33,7 @@
                     <div id="editor-container" style="height: 280px !important;"></div>
                     
                     
-                    <button  type="submit" value="Submit" id="salvar"><b><i>Salvar</i></b></button>
+                    <button  type="submit" id="salvar" onclick="changeAction()"><b><i>Salvar</i></b></button>
         
                     
                     <button class="indic" type="submit" id="editar" disabled><b><i>Editar</i></b></button> 
@@ -94,7 +97,7 @@
 
 
 <script>
-      var quill = new Quill('#editor-container', {
+      const quill = new Quill('#editor-container', {
         theme: 'snow' // Tema com barra de ferramentas
         });
     
@@ -170,6 +173,7 @@
     const sendEmail = document.getElementById('sendEmail');
     const send_Email = document.querySelectorAll('.send-Email')
     const noteBack = document.getElementById('noteId')
+    const notetext = document.getElementById('notetext')
 
 
    send_Email.forEach(button => {
@@ -308,6 +312,13 @@ pdfButtons.forEach(button => {
     });
 });
 
+function changeAction() {
+
+    const textoDoEditor = quill.getText(); 
+    notetext.value = textoDoEditor;
+
+    form.action = "/front/notes"; 
+};
 
 
     

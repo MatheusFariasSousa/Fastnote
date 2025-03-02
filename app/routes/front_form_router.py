@@ -53,10 +53,11 @@ def get_token(response:Response,forms:OAuth2PasswordRequestForm = Depends(),db_s
 
 
 @front_router.post("/notes")
-def post_note(token:str=Form(...),title:str=Form(...),note:str=Form(...),db_session:Session = Depends(get_conection)):
+def post_note(token:str=Form(...),title:str=Form(...),notetext:str=Form(...),db_session:Session = Depends(get_conection)):
+    print("aaaaaaaaaaaaaaaa")
     payload = decode_token(token=token)
     current_user = get_user_from_payload(db_session=db_session,payload=payload)
-    notation = Note_Schema(title=title,text=note)
+    notation = Note_Schema(title=title,text=notetext)
     uc= Notes_Use_Case(db_session=db_session)
     uc.post_not(notation,current_user)
     return RedirectResponse(url=f"/front/notes/{token}", status_code=status.HTTP_303_SEE_OTHER)
