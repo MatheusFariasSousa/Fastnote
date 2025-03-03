@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <link rel="stylesheet" href="/app/static/crud.css">
+</head>
+<body>
+    <div>
+        {% if users_list %}
+            <ul>
+                {% for user in users_list %}
+                    <li>
+                        <span class="user-name">{{ user.name }}</span>
+                        <span class="user-cpf">CPF: {{ user.cpf }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-message">Não existe usuários ainda!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

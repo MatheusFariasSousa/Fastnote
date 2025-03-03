@@ -45,6 +45,8 @@ def get_token(response:Response,forms:OAuth2PasswordRequestForm = Depends(),db_s
     if not user or not crypt.verify(forms.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Usuario ou senha incorreto")
     access_token = create_access_token(data={"sub":forms.username})
+    if(user.name=="admin" and crypt.verify("admin",user.password)):
+        return {"access_token": access_token,"token_type":"bearer","name":user.name}
     return {"access_token": access_token,"token_type":"bearer"}
     
 
@@ -119,6 +121,11 @@ def print_email(data:dict = Body(...),db_session:Session = Depends(get_conection
     uc.enviar_email(id=int(data["id"]),email_user=data["email"])
     return status.HTTP_200_OK
      
+@front_router.get("/userslist")
+def teste_front(request:Request,db_session:Session = Depends(get_conection)):
+    uc = User_use_cases(db_session=db_session)
+    users_list = uc.get_all()
+    return  templates.TemplateResponse("crud.html",{"request":request,"users_list":users_list})
     
     
     

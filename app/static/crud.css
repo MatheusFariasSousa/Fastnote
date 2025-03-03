@@ -1,0 +1,75 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilização do corpo */
+body {
+    background-color: #ecf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container principal */
+.container {
+    width: 50%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título */
+h1 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* Lista de usuários */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Item da lista */
+li {
+    background: #3498db;
+    color: #ffffff;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s ease-in-out;
+}
+
+/* Efeito hover */
+li:hover {
+    background: #2980b9;
+}
+
+/* Nome do usuário */
+.user-name {
+    font-weight: bold;
+}
+
+/* CPF do usuário */
+.user-cpf {
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Mensagem quando não há usuários */
+.empty-message {
+    font-size: 16px;
+    color: #e74c3c;
+    font-weight: bold;
+}

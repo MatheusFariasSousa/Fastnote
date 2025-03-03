@@ -70,51 +70,69 @@
       });
 
       if (response.ok) {
-          const data = await response.json();
-          var user_b =  document.getElementById("users_b")
-          user_b.style.visibility = 'visible';
+        const data = await response.json();
 
-          
-          localStorage.setItem('access_token', data.access_token);
-          alert("Token armazenado com sucesso no localStorage!");
+        localStorage.setItem('access_token', data.access_token);
+        alert("Token armazenado com sucesso no localStorage!");
 
-         
-          const token = data.access_token; 
-          const seeTokenLink = document.getElementById('notes-link');
-          
-          seeTokenLink.href = `/front/notes/${token}`;
-          
-          
+        const token = data.access_token; 
+        const seeTokenLink = document.getElementById('notes-link');
+        seeTokenLink.href = `/front/notes/${token}`;
+
+        var user_b = document.getElementById("users_b");
+        user_b.style.visibility = 'hidden';
+
+        if (data.name && data.name.trim().toLowerCase() === "admin") {
+            user_b.style.visibility = 'visible';
+        }
 
       } else {
           alert("Erro ao obter o token.");
       }
   });
   document.getElementById('registration-form').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent the default form submission
+    event.preventDefault();  
 
-    const formData = new FormData(this);  // Gather form data
+    const formData = new FormData(this);  
 
-    // Submit the form using AJAX (fetch)
+
     fetch('/front/result-form', {
       method: 'POST',
       body: formData
     })
     .then(response => {
       if (response.ok) {
-        // If the response is OK (status 200), show the success alert
+
         alert("Success");
         this.reset();
       } else {
-        // If something went wrong, you can handle errors here
+
         alert("Something went wrong!");
       }
     })
     .catch(error => {
-      // Handle network or other errors
+
       alert("Error: " + error);
     });
   });
+  async function users_list() {
+    try {
+        const response = await fetch(`/front/userslist`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erro: ${response.status}`);
+        }
+        window.location.href = "/front/userslist";
+
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+    }
+}
 
 </script>
 
