@@ -162,3 +162,32 @@ body{
     transform: translate(-50%, -50%) 
 
 }
+.button2 {
+    visibility: hidden;
+    display: inline; /* Para que funcione como um botão */
+    padding: 8px 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    border: 2px solid rgb(23, 111, 211); /* Borda */
+    background-color: #ffffff; /* Cor de fundo */
+    color:  rgb(23, 111, 211); /* Cor do texto */
+    position: absolute;
+    margin-left: 877px;
+    margin-top: 70px;
+
+    text-decoration: none; /* Remove o sublinhado do link */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    transition: background-color 0.6s, color 0.6s; /* Transição suave ao passar o mouse */
+    
+}
+.button2:hover {
+    background-color:  rgb(23, 111, 211);
+    color: rgb(204, 199, 199); /* Cor do texto ao passar o mouse */
+}
+.button2-container{
+    margin: 0;
+    position: absolute;
+    top: 52%;
+    left: 49%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}

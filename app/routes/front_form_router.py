@@ -37,12 +37,10 @@ def post_front(fname:str=Form(...),cpf:str= Form(...),password:str= Form(...),db
     person = User_schema(name=fname,cpf=cpf,password=password)
     uc = User_use_cases(db_session=db_session)
     uc.post_user(person)
-    return person
+    return RedirectResponse(url=f"/front", status_code=status.HTTP_303_SEE_OTHER)
 
 @front_router.post("/get-token")
 def get_token(response:Response,forms:OAuth2PasswordRequestForm = Depends(),db_session:Session = Depends(get_conection)):
-   
-    
     user = db_session.query(User).where(User.name==forms.username).first()
     if not user or not crypt.verify(forms.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Usuario ou senha incorreto")
@@ -54,7 +52,6 @@ def get_token(response:Response,forms:OAuth2PasswordRequestForm = Depends(),db_s
 
 @front_router.post("/notes")
 def post_note(token:str=Form(...),title:str=Form(...),notetext:str=Form(...),db_session:Session = Depends(get_conection)):
-    print("aaaaaaaaaaaaaaaa")
     payload = decode_token(token=token)
     current_user = get_user_from_payload(db_session=db_session,payload=payload)
     notation = Note_Schema(title=title,text=notetext)

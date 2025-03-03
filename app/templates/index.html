@@ -19,7 +19,7 @@
     
 
 
-<form class="itens-cadastro" action="/front/result-form" method="post">
+<form class="itens-cadastro" id="registration-form" method="post">
     <h2>Criar Conta</h2>
   <label for="fname"></label>
   <input type="text" id="fname" name="fname" placeholder="Insira seu nome completo">
@@ -48,6 +48,9 @@
 <a id="notes-link" href="#" class="button"><b>Criar Nota</b></a>
 
 </div>
+<div>
+    <button id="users_b" class="button2" onclick="users_list()"><b>Ver Usuarios</b></button>
+</div> 
 
 
 
@@ -68,6 +71,8 @@
 
       if (response.ok) {
           const data = await response.json();
+          var user_b =  document.getElementById("users_b")
+          user_b.style.visibility = 'visible';
 
           
           localStorage.setItem('access_token', data.access_token);
@@ -85,6 +90,32 @@
           alert("Erro ao obter o token.");
       }
   });
+  document.getElementById('registration-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission
+
+    const formData = new FormData(this);  // Gather form data
+
+    // Submit the form using AJAX (fetch)
+    fetch('/front/result-form', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
+        // If the response is OK (status 200), show the success alert
+        alert("Success");
+        this.reset();
+      } else {
+        // If something went wrong, you can handle errors here
+        alert("Something went wrong!");
+      }
+    })
+    .catch(error => {
+      // Handle network or other errors
+      alert("Error: " + error);
+    });
+  });
+
 </script>
 
 
