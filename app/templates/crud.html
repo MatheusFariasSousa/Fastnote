@@ -13,8 +13,9 @@
             <ul>
                 {% for user in users_list %}
                     <li>
-                        <span class="user-name">{{ user.name }}</span>
+                        <span class="user-name">Nome: {{ user.name }}</span>
                         <span class="user-cpf">CPF: {{ user.cpf }}</span>
+                        <button onclick="deleteUser('{{ user.cpf }}')">Excluir</button>
                     </li>
                 {% endfor %}
             </ul>
@@ -24,3 +25,19 @@
     </div>
 </body>
 </html>
+
+<script>
+    function deleteUser(cpf) {
+        fetch(`/front/deleteUser/${cpf}`, {
+            method: "DELETE",
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Recarrega a página após a exclusão
+            } else {
+                alert("Erro ao excluir o usuário.");
+            }
+        })
+        .catch(error => console.error("Erro:", error));
+    }
+</script>

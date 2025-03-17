@@ -127,8 +127,13 @@ def teste_front(request:Request,db_session:Session = Depends(get_conection)):
     users_list = uc.get_all()
     return  templates.TemplateResponse("crud.html",{"request":request,"users_list":users_list})
     
-    
-    
+@front_router.delete("/deleteUser/{cpf}")
+def deleteUser(request: Request,cpf:str,db_session:Session = Depends(get_conection)):
+     uc = User_use_cases(db_session=db_session)
+     uc.delete_user_by_cpf(cpf=cpf)
+     users_list = uc.get_all()
+     return  templates.TemplateResponse("crud.html",{"request":request,"users_list":users_list})
+
     
     
 

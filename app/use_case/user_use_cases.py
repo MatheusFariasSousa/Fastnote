@@ -61,6 +61,11 @@ class User_use_cases:
             return person
         except IntegrityError:
             raise HTTPException(detail="Integrity Error",status_code=status.HTTP_401_UNAUTHORIZED)
-        
+    
+    def delete_user_by_cpf(self,cpf:str):
+        person = self.db_session.query(User).where(User.cpf==cpf).first()
+        print(person)
+        self.db_session.delete(person)
+        self.db_session.commit()
     
             

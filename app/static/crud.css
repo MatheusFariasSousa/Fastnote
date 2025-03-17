@@ -1,75 +1,66 @@
-/* Reset básico */
-* {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Estilização do corpo */
-body {
-    background-color: #ecf0f1;
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-/* Container principal */
-.container {
-    width: 50%;
-    background: #ffffff;
+div {
+    background: #fff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: left;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-/* Título */
-h1 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-    font-size: 24px;
-}
-
-/* Lista de usuários */
 ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 }
 
-/* Item da lista */
 li {
-    background: #3498db;
-    color: #ffffff;
+    background: #e3e3e3;
     margin: 10px 0;
-    padding: 12px;
+    padding: 10px;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.3s ease-in-out;
+    gap: 10px;
 }
 
-/* Efeito hover */
-li:hover {
-    background: #2980b9;
-}
-
-/* Nome do usuário */
 .user-name {
     font-weight: bold;
+    color: #333;
 }
 
-/* CPF do usuário */
 .user-cpf {
-    font-style: italic;
     font-size: 14px;
+    color: #666;
 }
 
-/* Mensagem quando não há usuários */
+button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #cc0000;
+}
+
 .empty-message {
     font-size: 16px;
-    color: #e74c3c;
-    font-weight: bold;
+    color: #888;
 }
