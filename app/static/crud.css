@@ -1,66 +1,128 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #eef2f3;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
 div {
-    background: #fff;
+    background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: left;
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
 }
 
 ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
 li {
-    background: #e3e3e3;
+    background: #fff;
     margin: 10px 0;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-.user-name {
+.user-name, .user-cpf {
+    font-size: 16px;
     font-weight: bold;
     color: #333;
-}
-
-.user-cpf {
-    font-size: 14px;
-    color: #666;
+    margin: 5px 0;
 }
 
 button {
-    background-color: #ff4d4d;
-    color: white;
+    margin-top: 8px;
+    width: 100px;
+    padding: 8px;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
-button:hover {
-    background-color: #cc0000;
+#excluir {
+    background: #e74c3c;
+    color: white;
+}
+
+#excluir:hover {
+    background: #c0392b;
+}
+
+#verNota {
+    background: #3498db;
+    color: white;
+}
+
+#verNota:hover {
+    background: #2980b9;
 }
 
 .empty-message {
-    font-size: 16px;
-    color: #888;
+    color: #666;
+    font-style: italic;
 }
+        /* Estilo da Modal */
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+.modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 40%;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+.close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+.close:hover {
+            color: darkred;
+        }
+
+#notesList {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+#notesList li {
+            background: #f4f4f4;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 5px solid #007BFF;
+        }
+.note-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+.note-date {
+            font-size: 14px;
+            color: gray;
+        }

@@ -67,5 +67,9 @@ class User_use_cases:
         print(person)
         self.db_session.delete(person)
         self.db_session.commit()
+
+    def getUserIdByCpf(self,cpf:str):
+        person = self.db_session.query(User).where(User.cpf==cpf).first()
+        return person.id
     
             

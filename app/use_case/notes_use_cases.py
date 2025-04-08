@@ -46,6 +46,11 @@ class Notes_Use_Case:
             self.db_session.commit()
         except IntegrityError:
             raise HTTPException(detail="Integrity Error",status_code=status.HTTP_401_UNAUTHORIZED)
+        
+    def openModal(self,user_id:int):
+        notes = self.db_session.query(Notes).where(Notes.user_id == user_id).all() 
+        return list(notes)
+
 
 
 

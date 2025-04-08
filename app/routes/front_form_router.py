@@ -14,7 +14,7 @@ from app.use_case.notes_use_cases import Notes_Use_Case
 from app.use_case.pdf_use_cases import Pdf_Use_Case
 from app.use_case.email_use_cases import Emai_Use_Case
 from app.security.user import create_access_token,get_current_user,decode_token,get_user_from_payload
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse,JSONResponse
 
 
 from passlib.context import CryptContext
@@ -133,6 +133,23 @@ def deleteUser(request: Request,cpf:str,db_session:Session = Depends(get_conecti
      uc.delete_user_by_cpf(cpf=cpf)
      users_list = uc.get_all()
      return  templates.TemplateResponse("crud.html",{"request":request,"users_list":users_list})
+
+@front_router.get("/verNotasModal/{cpf}")
+def verNotasModal(request: Request , cpf:str, db_session:Session = Depends(get_conection)):
+    ucUser = User_use_cases(db_session=db_session)
+    user_id = ucUser.getUserIdByCpf(cpf=cpf)
+    print(user_id)
+    uc = Notes_Use_Case(db_session=db_session)
+    notesList = uc.openModal(user_id=user_id)
+    print(notesList)
+    notes_data = [
+        {
+            "title": note.title,
+            "created_at": note.created_at.strftime('%d/%m/%Y %H:%M')
+        }
+        for note in notesList
+    ]
+    return JSONResponse(content={"notesList": notes_data})
 
     
     
