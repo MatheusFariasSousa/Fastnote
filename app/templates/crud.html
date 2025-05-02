@@ -34,6 +34,14 @@
         </div>
     </div>
 
+    <div id="noteDetailsModal" class="modal">
+        <div class="modal-content1">
+            <span class="close-btn" onclick="closeNoteDetailsModal()">✖</span>
+            <h2 id="noteModalTitle"></h2> <!-- Título da nota -->
+            <p id="noteModalText"></p>   <!-- Texto da nota -->
+        </div>
+    </div>
+
 <script>
     function deleteUser(cpf) {
         fetch(`/front/deleteUser/${cpf}`, {
@@ -41,35 +49,69 @@
         })
         .then(response => {
             if (response.ok) {
-                location.reload(); // Recarrega a página após a exclusão
+                location.reload(); 
             } else {
                 alert("Erro ao excluir o usuário.");
             }
         })
         .catch(error => console.error("Erro:", error));
     }
-  // Função para buscar as notas do usuário
-  function fetchNotes(cpf) {
-        fetch(`/front/verNotasModal/${cpf}`)
-            .then(response => response.json())
-            .then(data => {
-                let notesList = document.getElementById("notesList");
-                notesList.innerHTML = "";
 
-                if (data.notesList.length === 0) {
-                    notesList.innerHTML = "<p>Nenhuma nota encontrada!</p>";
-                } else {
-                    data.notesList.forEach(note => {
-                        let li = document.createElement("li");
-                        li.innerHTML = `<strong>${note.title}</strong> <br> ${note.created_at}`;
-                        notesList.appendChild(li);
-                    });
-                }
+    function fetchNotes(cpf) {
+    fetch(`/front/verNotasModal/${cpf}`)
+        .then(response => response.json())
+        .then(data => {
+            let notesList = document.getElementById("notesList");
+            notesList.innerHTML = "";
 
-                document.getElementById("notesModal").style.display = "flex";
+            if (data.notesList.length === 0) {
+                notesList.innerHTML = "<p>Nenhuma nota encontrada!</p>";
+            } else {
+                data.notesList.forEach(note => {
+                    let li = document.createElement("li");
+                    li.innerHTML = `
+                        <strong>${note.title}</strong> <br> ${note.created_at} 
+                        <button class="open-note" data-title="${note.title}" data-text="${note.text}">Abrir</button>
+                    `;
+                    notesList.appendChild(li);
+                });
+            }
+
+            document.getElementById("notesModal").style.display = "flex"; // Exibir a modal com a lista de notas
+
+            // Agora, vamos garantir que o evento para o botão "Abrir" seja aplicado após a criação dos botões
+            document.querySelectorAll(".open-note").forEach(button => {
+                button.addEventListener("click", function () {
+                    let title = this.getAttribute("data-title");
+                    let text = this.getAttribute("data-text");
+
+                    // Enviar o título da nota para o backend
+                    fetch(`/front/abrirNota/${title}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Abrir a segunda modal com o título e o texto da nota
+                        document.getElementById("noteModalTitle").innerText = title;
+                        document.getElementById("noteModalText").innerText = data.text;
+                        document.getElementById("noteDetailsModal").style.display = "flex"; // Exibir a modal com os detalhes da nota
+                    })
+                    .catch(error => console.error("Erro ao enviar para o backend:", error));
+                });
             });
-    }
+        });
+}
 
+// Adicionar evento aos botões "Ver Notas"
+document.querySelectorAll(".verNota").forEach(button => {
+    button.addEventListener("click", function () {
+        let cpf = this.getAttribute("data-cpf");
+        fetchNotes(cpf);
+    });
+});
     // Adicionar evento aos botões "Ver Notas"
     document.querySelectorAll(".verNota").forEach(button => {
         button.addEventListener("click", function () {
@@ -82,4 +124,8 @@
     function closeModal() {
         document.getElementById("notesModal").style.display = "none";
     }
+
+    function closeNoteDetailsModal() {
+    document.getElementById("noteDetailsModal").style.display = "none";
+}
 </script>

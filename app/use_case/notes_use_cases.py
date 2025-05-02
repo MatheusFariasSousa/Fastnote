@@ -50,6 +50,10 @@ class Notes_Use_Case:
     def openModal(self,user_id:int):
         notes = self.db_session.query(Notes).where(Notes.user_id == user_id).all() 
         return list(notes)
+    
+    def getNoteByTitle(self,title:str):
+        note = self.db_session.query(Notes).where(Notes.title == title).first()
+        return {"title":note.title,"text":note.text}
 
 
 

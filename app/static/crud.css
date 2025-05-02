@@ -126,3 +126,94 @@ button {
             font-size: 14px;
             color: gray;
         }
+.open-note {
+    background-color: #007BFF; /* Cor azul */
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Botão menor com menos padding */
+    font-size: 14px; /* Texto menor */
+    border-radius: 6px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease-in-out; /* Efeito de transição */
+}
+
+.open-note:hover {
+    background-color: #0056b3; /* Cor azul mais escura no hover */
+    transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+}
+
+.open-note:active {
+    transform: scale(0.98); /* Efeito de contração ao clicar */
+}
+
+.open-note:focus {
+    outline: none; /* Remove o contorno quando o botão é focado */
+}
+
+#noteDetailsModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centraliza a modal no meio da tela */
+    width: 50%; /* Pode ajustar o tamanho conforme necessário */
+    max-width: 600px; /* Tamanho máximo da modal */
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo translúcido */
+}
+
+/* Modal Content */
+.modal-content1 {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #888;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adicionando sombra */
+    position: relative;
+}
+
+/* Close Button */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Título da Nota */
+.titleModel {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Texto da Nota */
+.textModel {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Data da Nota */
+.dateModel {
+    font-size: 14px;
+    color: #888;
+    text-align: right;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Efeito de fade-in */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

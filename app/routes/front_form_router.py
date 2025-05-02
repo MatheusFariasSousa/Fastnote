@@ -151,6 +151,12 @@ def verNotasModal(request: Request , cpf:str, db_session:Session = Depends(get_c
     ]
     return JSONResponse(content={"notesList": notes_data})
 
+@front_router.post("/abrirNota/{title}")
+def abrirNotaModal(request:Request , title:str, db_session:Session = Depends(get_conection)):
+    uc = Notes_Use_Case(db_session=db_session)
+    return uc.getNoteByTitle(title=title)
+    
+
     
     
 
