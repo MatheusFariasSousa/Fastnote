@@ -15,6 +15,9 @@ from app.use_case.pdf_use_cases import Pdf_Use_Case
 from app.use_case.email_use_cases import Emai_Use_Case
 from app.security.user import create_access_token,get_current_user,decode_token,get_user_from_payload
 from fastapi.responses import StreamingResponse,JSONResponse
+import random
+import smtplib
+from email.message import EmailMessage
 
 
 from passlib.context import CryptContext
@@ -32,11 +35,16 @@ templates = Jinja2Templates(directory="app/templates")
 def read_front(request:Request):
         return templates.TemplateResponse(request=request,name="index.html")
 
-@front_router.post("/result-form",response_model=User_Schema_Output)
-def post_front(fname:str=Form(...),cpf:str= Form(...),password:str= Form(...),db_session:Session = Depends(get_conection)):
+@front_router.post("/result-form")
+def post_front(fname:str=Form(...),cpf:str= Form(...),password:str= Form(...),emailPlace:str=Form(...),db_session:Session = Depends(get_conection)):
+    print(emailPlace)
+    print(emailPlace)
+    print(emailPlace)
     person = User_schema(name=fname,cpf=cpf,password=password)
     uc = User_use_cases(db_session=db_session)
     uc.post_user(person)
+    code = password
+    send_email(emailPlace,password)
     return RedirectResponse(url=f"/front", status_code=status.HTTP_303_SEE_OTHER)
 
 @front_router.post("/get-token")
@@ -158,8 +166,33 @@ def abrirNotaModal(request:Request , title:str, db_session:Session = Depends(get
     
 
     
-    
+def generate_code():
+    return f"{random.randint(100000, 999999)}"
 
+def send_email(receiver_email: str, code: str):
+    sender_email = "fast.note1000@gmail.com"
+    sender_password = "amvtckwyphswedau"
+
+    msg = EmailMessage()
+    msg['Subject'] = "Seu código de verificação"
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content(f"Olá! Seu código de verificação é: {code}")
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(sender_email, sender_password)
+        smtp.send_message(msg)
+
+@front_router.post("/validate-code")
+async def validate_code(code: str = Form(...), db_session:Session = Depends(get_conection)):
+    uc = User_use_cases(db_session=db_session)
+    bol = uc.getByPassword(code)
+    print(bol)
+    print(code)
+    
+    if bol:
+        return JSONResponse(content={"valid": True, "message": "Código válido!"})
+    return JSONResponse(content={"valid": False, "message": "Código inválido!"})
 
 
 

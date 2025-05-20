@@ -31,6 +31,23 @@ class Emai_Use_Case:
         s.sendmail(msg["From"],[msg["To"]],msg.as_string().encode("utf-8"))
         print("Email enviado")
 
+    def generate_code():
+        return f"{random.randint(100000, 999999)}"
+
+    def send_email(receiver_email: str, code: str):
+        sender_email = "seu_email@example.com"
+        sender_password = "sua_senha"
+
+        msg = EmailMessage()
+        msg['Subject'] = "Seu código de verificação"
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+        msg.set_content(f"Olá! Seu código de verificação é: {code}")
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+
 
 
 

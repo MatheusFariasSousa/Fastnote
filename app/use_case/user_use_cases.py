@@ -71,5 +71,15 @@ class User_use_cases:
     def getUserIdByCpf(self,cpf:str):
         person = self.db_session.query(User).where(User.cpf==cpf).first()
         return person.id
+
+    def getByPassword(self,password:str):
+        users = self.db_session.query(User).all()
+        
+        for user in users:
+            if crypt.verify(password, user.password):
+                return True
+        return False
+
+
     
             
