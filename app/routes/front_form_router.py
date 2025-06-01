@@ -195,7 +195,27 @@ async def validate_code(code: str = Form(...), db_session:Session = Depends(get_
     return JSONResponse(content={"valid": False, "message": "Código inválido!"})
 
 
+@front_router.post("/buscar-palavra-chave")
+def buscar_palavra_chave(data: dict = Body(...), db_session: Session = Depends(get_conection)):
+    keyword = data.get("keyword", "").lower()
+    token = data.get("token")
+    if not keyword or not token:
+        raise HTTPException(status_code=400, detail="Palavra-chave ou token ausente.")
 
+    payload = decode_token(token=token)
+    current_user = get_user_from_payload(db_session=db_session, payload=payload)
+
+    notes = db_session.query(Notes).filter(Notes.user_id == current_user.id).all()
+    
+    results = []
+    for note in notes:
+        if keyword in note.title.lower() or keyword in note.text.lower():
+            results.append({
+                "title": note.title,
+                "preview": note.text[:100] + "..." if len(note.text) > 100 else note.text
+            })
+
+    return results
 
     
 

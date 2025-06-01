@@ -36,7 +36,9 @@
                     <button  type="submit" id="salvar" onclick="changeAction()"><b><i>Salvar</i></b></button>
         
                     
-                    <button class="indic" type="submit" id="editar" disabled><b><i>Editar</i></b></button> 
+                    <button class="indic" type="submit" id="editar" disabled><b><i>Editar</i></b></button>
+                    
+                    <button class="testeBuscar" id="testeBuscar" type="button"><b><i>Buscar</i></b></button>
                 </div>
             </form>
         </main>
@@ -90,6 +92,18 @@
     
     
 </ul>
+
+<div id="modal-busca" class="modalBusca" style="display: none;">
+  <div class="modal-content1">
+    <span class="close1" id="close-modal">&times;</span>
+    <h2>Buscar por palavra-chave</h2>
+    <form id="search-form">
+      <input type="text" id="search-keyword" name="keyword" placeholder="Digite a palavra-chave...">
+      <button type="submit">Buscar</button>
+    </form>
+    <div id="search-results"></div>
+  </div>
+</div>
 
 
 
@@ -319,6 +333,42 @@ function changeAction() {
 
     form.action = "/front/notes"; 
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("testeBuscar").addEventListener("click", function(e) {
+        e.preventDefault(); 
+        document.getElementById("modal-busca").style.display = "block";
+    });
+});
+
+document.getElementById("close-modal").addEventListener("click", function() {
+  document.getElementById("modal-busca").style.display = "none";
+});
+
+document.getElementById("search-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const keyword = document.getElementById("search-keyword").value;
+  const token = "{{ token }}"; 
+  fetch("/front/buscar-palavra-chave", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ keyword: keyword, token: token })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const resultsDiv = document.getElementById("search-results");
+    resultsDiv.innerHTML = "";
+    if (data.length === 0) {
+      resultsDiv.innerHTML = "<p>Nenhuma nota encontrada.</p>";
+    } else {
+      data.forEach(note => {
+        resultsDiv.innerHTML += `<div><strong>${note.title}</strong><p>${note.preview}</p></div><hr>`;
+      });
+    }
+  });
+});
 
 
     
